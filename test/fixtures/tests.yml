@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  test_type: MyString
+  user: one
+  instruction: MyText
+  description: MyText
+  duration: 1
+  test_language: MyString
+  respondents: 1
+  access_type: MyString
+  leaving_page: MyString
+  leaving_page_count: 1
+  consent: false
+  consent_accepted: false
+
+two:
+  test_type: MyString
+  user: two
+  instruction: MyText
+  description: MyText
+  duration: 1
+  test_language: MyString
+  respondents: 1
+  access_type: MyString
+  leaving_page: MyString
+  leaving_page_count: 1
+  consent: false
+  consent_accepted: false

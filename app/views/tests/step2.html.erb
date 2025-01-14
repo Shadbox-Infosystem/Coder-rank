@@ -1,0 +1,102 @@
+<%= form_with(model: @test, url: step2_tests_path, method: :post, local: true) do |f| %>
+  <div class="container mt-5">
+    <%= render 'sidebar' %>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="text-center mb-4">Create a New Test</h3>
+
+            <% if @test.errors.any? %>
+              <div class="error_messages">
+                <h2><%= pluralize(@test.errors.count, "error") %> prohibited this test from being saved:</h2>
+                <ul>
+                  <% @test.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <!-- Access Type Dropdown -->
+            <div class="form-group">
+              <%= f.label :access_type, class: "form-label" %>
+              <%= f.select :access_type, options_for_select([['Public', 'public'], ['Private', 'private']]), { prompt: "Select Access Type" }, class: "form-control rounded-pill" %>
+            </div>
+
+            <!-- Leaving Page Dropdown -->
+            <div class="form-group">
+              <%= f.label :leaving_page, class: "form-label" %>
+              <%= f.select :leaving_page, options_for_select([['Disable', 'disable'], ['Enable', 'enable']]), { prompt: "Select Leaving Page Status" }, class: "form-control rounded-pill" %>
+            </div>
+
+            <div class="form-group">
+             <%= f.select :respondents_attributes,
+             @fields.map { |column| [column[:field_name].humanize, { field_name: column[:field_name], field_type: column[:field_type] }.to_json] }, { multiple: true, size: 4 } %>
+</div>
+            <!-- Submit Button -->
+            <div class="form-group text-center">
+              <%= f.submit "Next Step", class: "btn btn-primary btn-lg px-5 rounded-pill" %>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<style>
+  .card {
+    border-radius: 1rem;
+  }
+
+  .form-label {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .form-control {
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .container {
+    padding: 40px;
+  }
+
+  .card-body {
+    padding: 30px;
+  }
+
+  .btn-lg {
+    width: 100%;
+  }
+</style>
+ <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const currentStep = document.body.dataset.step; // Set this dynamically in your layout or view
+    if (currentStep) {
+      const sidebarStep = document.querySelector(`.sidebar .step[data-step="${currentStep}"]`);
+      if (sidebarStep) {
+        sidebarStep.classList.add('active');
+      }
+    }
+  });
+</script>

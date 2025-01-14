@@ -11,4 +11,15 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   root to: 'home#index'
+  resources :tests, only: [:new, :create, :update, :destroy] do
+    collection do
+      get :step1
+      post :step1
+      get :step2
+      post :step2
+      get :step3
+      post :step3
+    end
+  end
+
 end

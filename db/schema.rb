@@ -10,9 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_30_135941) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_06_094410) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "respondents", force: :cascade do |t|
+    t.bigint "test_id", null: false
+    t.boolean "mandatory", default: false
+    t.string "field_name"
+    t.string "field_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["test_id"], name: "index_respondents_on_test_id"
+  end
+
+  create_table "tests", force: :cascade do |t|
+    t.string "test_type"
+    t.bigint "user_id", null: false
+    t.text "instruction"
+    t.text "description"
+    t.integer "duration"
+    t.string "test_language"
+    t.string "access_type"
+    t.string "leaving_page"
+    t.integer "leaving_page_count"
+    t.boolean "consent"
+    t.boolean "consent_accepted"
+    t.boolean "mandatory", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_tests_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -27,4 +55,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_30_135941) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "respondents", "tests"
+  add_foreign_key "tests", "users"
 end

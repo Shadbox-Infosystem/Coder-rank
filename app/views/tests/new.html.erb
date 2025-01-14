@@ -1,0 +1,41 @@
+<%= form_with(model: @test, url: step1_tests_path, local: true) do |form| %>
+  <% if @test.errors.any? %>
+    <div class="error_messages">
+      <h2><%= pluralize(@test.errors.count, "error") %> prohibited this test from being saved:</h2>
+      <ul>
+        <% @test.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :test_type %>
+    <%= form.text_field :test_type, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :instruction %>
+    <%= form.text_area :instruction, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :duration %>
+    <%= form.number_field :duration, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :test_language %>
+    <%= form.text_field :test_language, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit 'Next', class: 'btn btn-primary' %>
+  </div>
+<% end %>

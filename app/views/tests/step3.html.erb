@@ -1,0 +1,98 @@
+<%= form_with(model: @test, url: test_path(@test), method: :patch) do |f| %>
+  <div class="container mt-5">
+    <%= render 'sidebar' %>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="text-center mb-4">Update Test</h3>
+
+            <div class="form-group">
+              <%= f.label :instruction, class: "form-label" %>
+              <%= f.text_area :instruction, class: "form-control rounded-lg", rows: 3 %>
+            </div>
+
+            <!-- Consent Checkbox -->
+            <div class="form-group">
+              <%= f.label :consent, class: "form-label" %>
+              <%= f.check_box :consent, class: "form-check-input" %>
+            </div>
+
+            <!-- Consent Accepted Checkbox -->
+            <div class="form-group">
+              <%= f.label :consent_accepted, class: "form-label" %>
+              <%= f.check_box :consent_accepted, class: "form-check-input" %>
+              <small class="form-text text-muted">Please check this box to accept the conditions.</small>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group text-center">
+              <%= f.submit "Submit", class: "btn btn-primary btn-lg px-5 rounded-pill" %>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<style>
+  .card {
+    border-radius: 1rem;
+  }
+
+  .form-label {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .form-control {
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-check-input {
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .container {
+    padding: 40px;
+  }
+
+  .card-body {
+    padding: 30px;
+  }
+
+  .btn-lg {
+    width: 100%;
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const currentStep = document.body.dataset.step; // Set this dynamically in your layout or view
+    if (currentStep) {
+      const sidebarStep = document.querySelector(`.sidebar .step[data-step="${currentStep}"]`);
+      if (sidebarStep) {
+        sidebarStep.classList.add('active');
+      }
+    }
+  });
+</script>
