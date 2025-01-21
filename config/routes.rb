@@ -19,6 +19,13 @@ Rails.application.routes.draw do
       post :step2
       get :step3
       post :step3
+      get :step4
+      post :step4
+      get :step5
+      post :step5
+    end
+    member do
+      get :summary, to: 'tests#show_summary'
     end
   end
 
