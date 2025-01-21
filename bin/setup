@@ -13,9 +13,21 @@ FileUtils.chdir APP_ROOT do
   # This script is idempotent, so that you can run it at any time and get an expectable outcome.
   # Add necessary setup steps to this file.
 
-  puts "== Installing dependencies =="
+  puts "== Installing Ruby dependencies =="
   system! "gem install bundler --conservative"
   system("bundle check") || system!("bundle install")
+
+  puts "\n== Installing JavaScript dependencies =="
+  # Check if the project uses npm or yarn
+  if File.exist?("package-lock.json")
+    puts "Using npm to install dependencies"
+    system! "npm install"
+  elsif File.exist?("yarn.lock")
+    puts "Using yarn to install dependencies"
+    system! "yarn install"
+  else
+    puts "No package manager detected (neither package-lock.json nor yarn.lock found). Please ensure dependencies are installed manually."
+  end
 
   # puts "\n== Copying sample files =="
   # unless File.exist?("config/database.yml")
