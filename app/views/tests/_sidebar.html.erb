@@ -7,7 +7,13 @@
       <%= link_to "Step 2: Additional Info", step2_tests_path %>
     </li>
     <li class="list-group-item step <%= 'active' if params[:action] == 'step3' %>" data-step="step3">
-      <%= link_to "Step 3: Review & Submit", step3_tests_path %>
+      <%= link_to "Step 3: added conclusion", step3_tests_path %>
+    </li>
+    <li class="list-group-item step <%= 'active' if params[:action] == 'step4' %>" data-step="step">
+      <%= link_to "Step 4: Add questions", step4_tests_path %>
+    </li>
+    <li class="list-group-item step <%= 'active' if params[:action] == 'step5' %>" data-step="step">
+      <%= link_to "Step 5: summary & grades", step5_tests_path %>
     </li>
   </ul>
 </div>

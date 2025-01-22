@@ -1,0 +1,30 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h3 class="text-center mb-4">Test Summary</h3>
+
+          <!-- Pass or Fail Message -->
+          <div class="alert <%= @passed ? 'alert-success' : 'alert-danger' %>">
+            <%= @passed ? @test.pass_message : @test.fail_message %>
+          </div>
+
+          <!-- Score Details -->
+          <ul class="list-group">
+            <li class="list-group-item">Percentage Score: <%= @score %>%</li>
+            <li class="list-group-item">Maximum Score: <%= @test.max_score %> points</li>
+            <li class="list-group-item">Passing Mark: <%= @test.pass_mark %>%</li>
+            <li class="list-group-item">Status: <%= @passed ? 'Passed' : 'Failed' %></li>
+          </ul>
+
+          <!-- Back to Dashboard -->
+          <div class="text-center mt-4">
+            <%= link_to "Back to Dashboard", root_path, class: "btn btn-primary btn-lg px-5 rounded-pill" %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
