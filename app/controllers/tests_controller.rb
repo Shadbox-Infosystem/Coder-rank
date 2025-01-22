@@ -25,51 +25,58 @@ class TestsController < ApplicationController
 
   def step2
     @current_step = 2
-    @fields = [
-      { field_name: "age", field_type: "integer" },
-      { field_name: "city", field_type: "string" },
-      { field_name: "first_name", field_type: "string" },
-      { field_name: "last_name", field_type: "string" },
-      { field_name: "id_number", field_type: "string" },
-      { field_name: "organization_name", field_type: "string" },
-      { field_name: "postal_code", field_type: "string" }
-    ]
-
+  
+    # If there is no test object, try to find it from the session
+    @test ||= Test.find_by(id: session[:test_id]) || Test.new(user: current_user)
+  
+    # Check if there is a valid test object
+    unless @test.persisted?
+      redirect_to step1_tests_path, alert: "Please complete Step 1 first." 
+      return
+    end
+  
+    # Handle POST request
     if request.post?
-
-      params.dig("test","respondents_attributes").reject(&:blank?).each do |respondent|
-        respondents_attributes = JSON.parse(respondent)
-        @test.respondents.new(respondents_attributes)
-      end
+      respondents_attributes = params.dig("test", "respondents")
       
+      if respondents_attributes.present?
+        # Assuming respondents are directly passed as JSON objects
+        respondents_attributes.each do |respondent|
+          parsed_respondent = JSON.parse(respondent)
+          @test.respondents.build(parsed_respondent)
+        end
+      end
+  
       @test.assign_attributes(test_params)
       if @test.save
         redirect_to step3_tests_path, notice: "Step 2 completed successfully!"
       else
         render :step2
       end
-    else
-      redirect_to step1_tests_path, alert: "Please complete Step 1 first." unless @test&.persisted?
     end
   end
 
   def step3
     @current_step = 3
-    if request.post?
-      @test.assign_attributes(test_params)
-      if @test.save
-        redirect_to root_path, notice: "Test created successfully!"
-      else
-        render :step3
-      end
+    @test = Test.find_by(id: params[:id])
+
+    if @test.nil?
+      render json: { error: 'Test not found' }, status: 404
+      return
+    end
+
+    @test.assign_attributes(test_params)
+    if @test.save
+      render json: @test, status: :ok
     else
-      redirect_to step2_tests_path, alert: "Please complete Step 2 first." unless @test&.persisted?
+      render json: @test.errors, status: :unprocessable_entity
     end
   end
 
+
   def create
     if @test.update(test_params)
-      session.delete(:test_id) # Clear the session after completion
+      session.delete(:test_id)
       redirect_to root_path, notice: "Test created successfully!"
     else
       render :step3
@@ -77,12 +84,21 @@ class TestsController < ApplicationController
   end
 
   def update
+    @test = Test.find_by(id: params[:id])
+  
+    if @test.nil?
+      # Handle the case when the test is not found
+      redirect_to '/tests/step1', alert: 'Test not found'
+      return
+    end
+  
     if @test.update(test_params)
-      redirect_to root_path, notice: "Test updated successfully!"
+      redirect_to next_step_path(@test) # assuming there's logic for the next step
     else
-      render :step3
+      render :edit # render the edit page if there are validation errors
     end
   end
+  
 
   def destroy
     @test = Test.find(params[:id])
